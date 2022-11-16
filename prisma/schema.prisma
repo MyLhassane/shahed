@@ -6,6 +6,36 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model movie {
+  id Int @id @default(autoincrement())
+  title       String
+  description String
+  genre       Genre[]
+  slug        String
+  image       String
+  url         String
+  rate        Decimal
+  year        Int
+}
+
+model netflix_table {
+  id Int @id @default(autoincrement())
+  title       String
+  genre       Genre[]
+  slug        String
+  image       String
+  link         String
+  rate        Decimal
+  year        Int
+}
+
+model Genre {
+  id      Int @id @default(autoincrement())
+  name    String  @unique
+  movies  movie[]
+  netflix_table  netflix_table[]
 }

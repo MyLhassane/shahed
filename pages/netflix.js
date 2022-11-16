@@ -9,12 +9,12 @@ const prisma = new PrismaClient();
 
 export default function Home({ data }) {
   const [formData, setFormData] = useState({});
-  const [movies, SetMovies] = useState(data);
+  const [netflix_table, SetNetflixTable] = useState(data);
 
   async function saveMovie(e) {
     e.preventDefault();
-    SetMovies([...movies, formData]);
-    const response = await fetch("/api/movies", {
+    SetNetflixTable([...netflix_table, formData]);
+    const response = await fetch("/api/netflix_table", {
       method: "POST",
       body: JSON.stringify(formData),
     });
@@ -27,10 +27,10 @@ export default function Home({ data }) {
         <div className="bg-white">
           <div className="mx-auto max-w-2xl py-16 px-4 sm:py-6 lg:max-w-7xl lg:gap-x-8">
             <h2 className="text-4xl text-center font-bold tracking-tight text-gray-900">
-              Home
+              Netflix
             </h2>
             <div className="mt-6 grid grid-cols-1 gap-y-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-              {movies.map((item) => (
+              {netflix_table.map((item) => (
                 <div key={item.id} className="group relative mb-10">
                   <div className="min-h-80 aspect-w-auto aspect-h-auto w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
                     {/* Poster */}
@@ -45,7 +45,7 @@ export default function Home({ data }) {
                   <div className="mt-4 flex justify-between">
                     <div>
                       {/* Title */}
-                      <Link href={`/movies/${item.slug}`}>
+                      <Link href={`/netflix_table/${item.slug}`}>
                         <h3 className="text-4xl leading-normal font-bold md:text-xl text-gray-700">
                           <span
                             aria-hidden="true"
@@ -88,7 +88,7 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps() {
-  const movies = await prisma.movie.findMany();
+  const netflix_table = await prisma.movie.findMany();
 
   // JSON.parse(JSON.stringify(value))
 
@@ -105,7 +105,7 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      data: JSON.parse(JSON.stringify(movies)),
+      data: JSON.parse(JSON.stringify(netflix_table)),
       include: { genre: true },
     },
   };
